@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Japa Sushi CBBA | Menú y Pedidos por WhatsApp</title>
+  <meta name="description" content="Menú digital de Japa Sushi CBBA en Cochabamba. Estamos de vuelta: piezas variadas, temakis, handrolls, cupmaki y piezas especiales. Pedidos por WhatsApp.">
+  <meta name="theme-color" content="#0a0708">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / SEO social -->
+  <meta property="og:type" content="restaurant">
+  <meta property="og:title" content="Japa Sushi CBBA | Estamos de vuelta">
+  <meta property="og:description" content="La alta gastronomía japonesa está de vuelta. Armá tu combinado y pedí por WhatsApp.">
+  <meta property="og:locale" content="es_BO">
+  <meta property="og:image" content="assets/img/logo.png">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/img/logo.png">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Fontes e ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Fontes carregadas de forma não bloqueante: se a rede estiver lenta ou o Google
+       estiver bloqueado, a página abre na hora com as fontes do sistema. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap">
+  </noscript>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Dados estruturados (SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Japa Sushi CBBA",
+    "servesCuisine": "Japonesa, Sushi, Sashimi, Temaki",
+    "priceRange": "$$",
+    "openingHours": ["Tu-Fr 18:00-23:00", "Sa-Su 18:00-23:30"]
+  }
+  </script>
+  <!-- Espacio reservado para el Meta Pixel (instalalo con /pagina-pixel cuando quieras) -->
+</head>
+<body>
+
+  <!-- ======================= CABEÇALHO ======================= -->
+  <header class="header">
+    <div class="header__top">
+      <div class="logo">
+        <div class="logo__badge" style="background:#000;border:1px solid rgba(212,175,55,.6);border-radius:12px" aria-label="Japa Sushi CBBA"><img src="assets/img/logo.png" alt="Japa Sushi CBBA" style="object-fit:contain" onerror="this.parentNode.textContent='🍣';this.parentNode.style.fontSize='24px'"></div>
+        <div style="min-width:0">
+          <div class="logo__nome" id="logoNome"></div>
+          <div class="logo__tel" id="logoTel"></div>
+        </div>
+      </div>
+      <a class="header__wpp" id="headerWpp" target="_blank" rel="noopener">
+        <span class="material-symbols-rounded">chat</span><span class="txt">Pedir por WhatsApp</span>
+      </a>
+    </div>
+    <div class="busca">
+      <div class="busca__campo">
+        <span class="material-symbols-rounded">search</span>
+        <input id="buscaInput" type="search" placeholder="Buscar en el menú (temaki, handroll, cupmaki...)" aria-label="Buscar productos">
+        <button class="busca__limpar material-symbols-rounded" id="buscaLimpar" aria-label="Limpiar búsqueda">close</button>
+      </div>
+    </div>
+    <div class="status-loja" id="statusLoja"></div>
+  </header>
+
+  <!-- ======================= NAV CATEGORIAS ======================= -->
+  <nav class="nav-cats" aria-label="Categorias">
+    <div class="nav-cats__inner" id="navCatsInner"></div>
+  </nav>
+
+  <!-- ======================= FAIXA REABERTURA ======================= -->
+  <section class="reabertura" aria-label="Reabertura">
+    <div class="reabertura__inner">
+      <span class="reabertura__tag"><span class="material-symbols-rounded" style="font-size:16px">celebration</span> Reapertura</span>
+      <div class="reabertura__titulo">Estamos de vuelta</div>
+      <div class="reabertura__sub">La alta gastronomía japonesa de Japa Sushi CBBA volvió. Promociones especiales para celebrar con vos.</div>
+    </div>
+  </section>
+
+  <!-- ======================= VITRINE DESTAQUES ======================= -->
+  <section class="hero" aria-label="Destaques">
+    <div class="hero__faixa"><span class="material-symbols-rounded" style="font-size:18px">local_fire_department</span> Los más pedidos y destacados de la casa</div>
+    <div class="destaques" id="destaques"></div>
+  </section>
+
+  <!-- ======================= CATÁLOGO ======================= -->
+  <main>
+    <div id="skeleton" style="max-width:1100px;margin:0 auto;padding:22px 16px">
+      <div class="skeleton sk-card"></div>
+      <div class="skeleton sk-card"></div>
+      <div class="skeleton sk-card"></div>
+    </div>
+    <div id="catalogo"></div>
+    <div id="semResultado" style="display:none;text-align:center;color:var(--cinza);padding:40px 16px">
+      <span class="material-symbols-rounded" style="font-size:48px;color:var(--cinza-2)">search_off</span>
+      <p style="margin-top:8px">No se encontró ningún ítem. Probá otra búsqueda.</p>
+    </div>
+  </main>
+
+  <!-- ======================= RODAPÉ ======================= -->
+  <footer class="rodape">
+    <div class="rodape__nome" id="rodapeNome"></div>
+    <div class="rodape__linha" id="rodapeEndereco"></div>
+    <div class="rodape__horarios" id="rodapeHorarios"></div>
+    <div><a class="rodape__wpp" id="rodapeWpp" target="_blank" rel="noopener"><span class="material-symbols-rounded">chat</span> Hacer pedido por WhatsApp</a></div>
+    <div class="rodape__linha" style="margin-top:16px;color:var(--cinza-2);font-size:.72rem">Pedidos solo por WhatsApp · Sin pago en línea</div>
+  </footer>
+
+  <!-- ======================= BOTÕES FLUTUANTES ======================= -->
+  <button class="fab-topo" id="fabTopo" aria-label="Volver arriba"><span class="material-symbols-rounded">arrow_upward</span></button>
+  <a class="fab-wpp" id="fabWpp" target="_blank" rel="noopener" aria-label="WhatsApp"><span class="material-symbols-rounded">chat</span></a>
+
+  <!-- ======================= BARRA DO CARRINHO ======================= -->
+  <div class="cart-bar" id="cartBar" role="button" tabindex="0" aria-label="Abrir carrito">
+    <div class="cart-bar__inner">
+      <span class="cart-bar__qtd"><span id="cartBarQtd">0</span> ítems</span>
+      <span class="cart-bar__txt">Ver mi pedido<small>Tocá para revisar y finalizar</small></span>
+      <span class="cart-bar__total" id="cartBarTotal">Bs 0,00</span>
+    </div>
+  </div>
+
+  <!-- ======================= MODAL PERSONALIZAÇÃO ======================= -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+  </div>
+
+  <!-- ======================= DRAWER CARRINHO ======================= -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="drawer" id="drawer" aria-label="Tu pedido">
+    <div class="drawer__topo">
+      <button class="drawer__fechar" id="drawerFechar" aria-label="Cerrar carrito"><span class="material-symbols-rounded">arrow_back</span></button>
+      <h2>Tu pedido</h2>
+    </div>
+    <div class="drawer__corpo">
+      <div class="drawer__acoes-topo" id="drawerAcoesTopo" style="display:none">
+        <button class="link-txt" id="btnContinuar"><span class="material-symbols-rounded" style="font-size:16px">add</span> Seguir comprando</button>
+        <button class="link-txt perigo" id="btnLimpar"><span class="material-symbols-rounded" style="font-size:16px">delete_sweep</span> Vaciar carrito</button>
+      </div>
+
+      <div id="drawerItens"></div>
+
+      <!-- FORM CLIENTE -->
+      <div id="formClienteWrap" style="display:none">
+        <form class="form-cliente" id="formCliente" onsubmit="return false">
+          <h3><span class="material-symbols-rounded">person</span> Tus datos</h3>
+          <div class="linha-2">
+            <div class="campo" id="campoNome">
+              <label>Nombre <span class="obr">*</span></label>
+              <input id="cliNome" type="text" autocomplete="given-name" placeholder="Tu nombre">
+              <div class="campo__erro">Ingresá tu nombre.</div>
+            </div>
+            <div class="campo" id="campoSobrenome">
+              <label>Apellido <span class="obr">*</span></label>
+              <input id="cliSobrenome" type="text" autocomplete="family-name" placeholder="Tu apellido">
+              <div class="campo__erro">Ingresá tu apellido.</div>
+            </div>
+          </div>
+
+          <h3><span class="material-symbols-rounded">payments</span> Forma de pago <span class="obr" style="color:var(--dourado)">*</span></h3>
+          <div class="campo" id="campoPagamento">
+            <div class="pagamentos" id="pagamentos">
+              <button type="button" class="pag-op" data-pag="Efectivo"><span class="material-symbols-rounded">payments</span> Efectivo</button>
+              <button type="button" class="pag-op" data-pag="QR"><span class="material-symbols-rounded">qr_code_2</span> QR</button>
+              <button type="button" class="pag-op" data-pag="Tarjeta de Débito"><span class="material-symbols-rounded">credit_card</span> Débito</button>
+              <button type="button" class="pag-op" data-pag="Tarjeta de Crédito"><span class="material-symbols-rounded">credit_card</span> Crédito</button>
+            </div>
+            <div class="campo__erro">Elegí una forma de pago.</div>
+          </div>
+          <div id="trocoWrap" style="display:none">
+            <div class="campo">
+              <label>¿Necesitás vuelto?</label>
+              <select id="precisaTroco">
+                <option value="nao">No necesito vuelto</option>
+                <option value="sim">Sí, necesito vuelto</option>
+              </select>
+            </div>
+            <div class="campo" id="campoTroco" style="display:none" >
+              <div id="trocoValorWrap" style="display:none">
+                <label>¿Vuelto para cuánto? (Bs)</label>
+                <input id="cliTroco" type="text" inputmode="decimal" placeholder="Ej: 100">
+                <div class="campo__erro">Ingresá el monto del vuelto.</div>
+              </div>
+            </div>
+          </div>
+
+          <h3><span class="material-symbols-rounded">home</span> Dirección de entrega</h3>
+          <div id="buscaEnderecoWrap" style="display:none">
+            <div class="campo">
+              <label>Buscar dirección (Google)</label>
+              <input id="cliBuscaEndereco" type="text" placeholder="Escribí y seleccioná tu dirección">
+            </div>
+          </div>
+          <div class="linha-3">
+            <div class="campo" id="campoRua">
+              <label>Calle <span class="obr">*</span></label>
+              <input id="cliRua" type="text" autocomplete="address-line1" placeholder="Nombre de la calle">
+              <div class="campo__erro">Ingresá la calle.</div>
+            </div>
+            <div class="campo" id="campoNumero">
+              <label>Número <span class="obr">*</span></label>
+              <input id="cliNumero" type="text" inputmode="numeric" placeholder="N°">
+              <div class="campo__erro">N°</div>
+            </div>
+          </div>
+          <div class="campo">
+            <label>Referencia</label>
+            <input id="cliComplemento" type="text" placeholder="Depto, piso, punto de referencia (opcional)">
+          </div>
+          <div class="linha-2">
+            <div class="campo" id="campoBairro">
+              <label>Zona / Barrio <span class="obr">*</span></label>
+              <input id="cliBairro" type="text" placeholder="Tu zona o barrio">
+              <div class="campo__erro">Ingresá la zona.</div>
+            </div>
+            <div class="campo" id="campoCidade">
+              <label>Ciudad <span class="obr">*</span></label>
+              <input id="cliCidade" type="text" value="Cochabamba" placeholder="Ciudad">
+              <div class="campo__erro">Ingresá la ciudad.</div>
+            </div>
+          </div>
+          <div class="campo">
+            <label>Código postal</label>
+            <input id="cliCep" type="text" inputmode="numeric" placeholder="Opcional">
+          </div>
+          <div class="campo" id="campoMaps">
+            <label>Ubicación para la entrega <span class="obr">*</span></label>
+            <button type="button" class="btn-localizacao" id="btnLocalizacao">
+              <span class="material-symbols-rounded">my_location</span>
+              <span id="btnLocalizacaoTxt">Enviar mi ubicación actual</span>
+            </button>
+            <div class="loc-status" id="locStatus"></div>
+            <div class="loc-ou">o pegá el link de Google Maps</div>
+            <input id="cliMaps" type="url" placeholder="https://maps.google.com/...">
+            <div class="campo__erro">Enviá tu ubicación o pegá el link de Google Maps.</div>
+            <div style="font-size:.72rem;color:var(--cinza-2);margin-top:5px">Al enviar tu ubicación, la tarifa de envío se calcula al instante y la ubicación va junto al pedido para el repartidor.</div>
+          </div>
+
+          <h3><span class="material-symbols-rounded">edit_note</span> Observaciones</h3>
+          <div class="campo">
+            <textarea id="cliObs" placeholder="¿Alguna observación general del pedido? (opcional)"></textarea>
+          </div>
+
+          <!-- RESUMO -->
+          <div class="resumo">
+            <div class="resumo__linha"><span>Subtotal de los productos</span><b id="resSubtotal">Bs 0,00</b></div>
+            <div class="resumo__linha" id="resDistLinha" style="display:none"><span>Distancia</span><b id="resDist">-</b></div>
+            <div class="resumo__linha"><span>Tarifa de envío</span><b id="resTaxa">A consultar</b></div>
+            <div class="resumo__total"><span>Total</span><b id="resTotal">Bs 0,00</b></div>
+          </div>
+          <div class="aviso-frete" id="avisoFrete"></div>
+        </form>
+      </div>
+    </div>
+
+    <div class="drawer__rodape">
+      <button class="btn-finalizar" id="btnFinalizar" disabled>
+        <span class="material-symbols-rounded">chat</span> FINALIZAR PEDIDO POR WHATSAPP
+      </button>
+    </div>
+  </aside>
+
+  <!-- TOASTS -->
+  <div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+  <script src="js/cardapio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
